@@ -9,7 +9,7 @@ const app = express();
 const mongoose = require("mongoose");
 //importer package node pour donner accès au chemin de système de fichiers
 const path = require("path");
-//importer helmet (sécurité)
+//importer helmet (sécurité globales vulné connues)
 const helmet = require("helmet");
 //utiliser helmet pour protection contre vulne bien connues -> configuration d'en-têtes http
 app.use(helmet());
@@ -22,13 +22,11 @@ const userRoutes = require("./routes/user");
 //connexion à MongoDB avec dotenv pour ne pas stocker info de connect dans le code
 mongoose
   .connect(
-    // `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_USER_PASS}@${process.env.DB_CLUSTER_NAME}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
-    "mongodb+srv://testmongodb:F0Typa2A5NMlfPLN@test.myy8e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    process.env.SECRET_BDD,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
-
 
 //ajouter middleware générale à notre appli pour permettre à l'app et au serv de communiquer. (eviter les CORS).
 app.use((req, res, next) => {
@@ -50,8 +48,8 @@ app.use(express.json());
 //créer middleware pour répondre aux requêtes envoyées a /images
 app.use("/images", express.static(path.join(__dirname, "images")));
 //importer les routes avec le bon complément d'url en argument
-app.use("/api/sauces", sauceRoutes);
 app.use("/api/auth", userRoutes);
+app.use("/api/sauces", sauceRoutes);
 
 //exporter l'appli express pour l'utiliser depuis le serveur
 module.exports = app;

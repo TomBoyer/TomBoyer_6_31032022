@@ -1,11 +1,11 @@
 //controllers : Logique métier
 
+// Variables d'environnement : séparation du stockage des données sensibles
+require("dotenv").config();
 //importer package de cryptage de mdp
 const bcrypt = require("bcrypt");
-
 //importer package pour créer token/modifier token
 const jwt = require("jsonwebtoken");
-
 //importer model user
 const User = require("../models/user");
 
@@ -24,7 +24,10 @@ exports.signup = (req, res, next) => {
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
         .catch((error) => res.status(400).json({ error }));
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch((error) => {
+      console.log(error);
+      return res.status(500).json({ error });
+    });
 };
 
 //middleware pour connecter des users existants
@@ -45,9 +48,9 @@ exports.login = (req, res, next) => {
             token: jwt.sign(
               //verification que c'est le bon user avec son id
               { userId: user._id },
-              //clef de cryptage
-              "RANDOM_TOKEN_SECRET",
-              //durée de vie token
+              //clef de cryptage (avec .env)
+              process.env.SECRET_TOKEN,
+              //durée de vie token = 24h
               { expiresIn: "24h" }
             ),
           });
