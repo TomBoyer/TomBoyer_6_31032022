@@ -24,13 +24,11 @@ passwordSchema
 
 //exporter schéma password
 module.exports = (req, res, next) => {
-  if (passwordSchema.validate(req.body.password)) {
-    res
-      .status(400)
-      .json({
-        message:
-          "Le mot de passe doit contenir : min 8 caractères, 1maj, 1min, 1chiffres, pas d'espaces, ne doit pas être trop simple",
-      });
+  if (!passwordSchema.validate(req.body.password)) {
+    res.status(400).json({
+      message:
+        "Le mot de passe doit contenir : min 8 caractères, 1maj, 1min, 1chiffres, pas d'espaces, ne doit pas être trop simple",
+    });
   } else {
     next();
   }

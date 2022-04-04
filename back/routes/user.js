@@ -9,7 +9,7 @@ const userCtrl = require("../controllers/user");
 const userPassword = require("../middleware/password");
 
 //permettre l'enregistrement si user existe pas
-router.post("/signup"/* , userPassword */, userCtrl.signup);
+router.post("/signup", userPassword, userCtrl.signup);
 
 //permettre le login is user existe
 router.post("/login", userCtrl.login);
