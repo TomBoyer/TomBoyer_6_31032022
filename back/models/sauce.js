@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 
 //créer un schéma de création d'une sauce avec les champs et types
 const sauceSchema = mongoose.Schema({
+    //gérer les sauces
     userId: { type: String, required: true },
     name: { type: String, required: true },
     manufacturer: { type: String, required: true },

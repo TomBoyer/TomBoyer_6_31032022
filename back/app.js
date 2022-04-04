@@ -22,11 +22,13 @@ const userRoutes = require("./routes/user");
 //connexion à MongoDB avec dotenv pour ne pas stocker info de connect dans le code
 mongoose
   .connect(
-    `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_USER_PASS}@${process.env.DB_CLUSTER_NAME}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+    // `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_USER_PASS}@${process.env.DB_CLUSTER_NAME}.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+    "mongodb+srv://testmongodb:F0Typa2A5NMlfPLN@test.myy8e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
+
 
 //ajouter middleware générale à notre appli pour permettre à l'app et au serv de communiquer. (eviter les CORS).
 app.use((req, res, next) => {

@@ -1,6 +1,5 @@
 //importer http
 const http = require("http");
-
 //importer l'appli express
 const app = require("./app");
 
@@ -17,7 +16,7 @@ const normalizePort = (val) => {
   return false;
 };
 
-//indiuquer à l'app sur quel port tourner 
+//indiquer à l'app sur quel port tourner 
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
@@ -42,6 +41,7 @@ const errorHandler = (error) => {
       throw error;
   }
 };
+
 //créer serveur avec le paramètre de l'application importée
 const server = http.createServer(app);
 
