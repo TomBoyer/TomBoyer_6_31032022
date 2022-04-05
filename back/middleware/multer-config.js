@@ -1,4 +1,4 @@
-//importer multer
+//importer multer : gestion de fichiers envoyés avec req http
 const multer = require("multer");
 
 //traduire l'extension

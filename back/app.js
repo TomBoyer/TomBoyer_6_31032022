@@ -30,6 +30,7 @@ mongoose
 
 //ajouter middleware générale à notre appli pour permettre à l'app et au serv de communiquer. (eviter les CORS).
 app.use((req, res, next) => {
+  //cf cours full stack OC
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -39,6 +40,8 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
+  //erreur CORS de policy ressource : affichage photo
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
   next();
 });
 
