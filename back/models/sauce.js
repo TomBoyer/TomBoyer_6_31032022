@@ -14,8 +14,8 @@ const sauceSchema = mongoose.Schema({
   //gérer les likes et dislikes
   likes: { type: Number, default: 0 },
   dislikes: { type: Number, default: 0 },
-  usersLiked: { type: [String] },
-  usersDisliked: { type: [String] },
+  usersLiked: { type: Array, 'default': [] },
+  usersDisliked: { type: Array, 'default': [] },
 });
 
 //exporter le model de schema pour importation depuis l'app

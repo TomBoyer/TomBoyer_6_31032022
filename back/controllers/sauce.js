@@ -78,10 +78,11 @@ exports.modifySauce = (req, res, next) => {
         }`,
       }
     : { ...req.body };
-  //use l'_id dans la req pour trouver la sauce à modifier avec le meme _id que l'original sans en créer une nouvelle
+  //delet l'ancienne pic pour ne pas surcharger doc img
   Sauce.findOne({ _id: req.params.id }).then((sauce) => {
     const filename = sauce.imageUrl.split("/images/")[1];
     fs.unlink(`images/${filename}`, () => {
+      //use l'_id dans la req pour trouver la sauce à modifier avec le meme _id que l'original sans en créer une nouvelle
       Sauce.updateOne(
         { _id: req.params.id },
         { ...sauceObject, _id: req.params.id }
@@ -92,31 +93,91 @@ exports.modifySauce = (req, res, next) => {
   });
 };
 
-//6. post like/dislike d'une sauce
-exports.likeSauce = (req, res, next) => {
-  console.log(req.body);
-  //input like
-  const like = req.body.like;
-  //url de la sauce
-  const sauceId = req.params.id;
-  //userId
-  const userId = req.body.userId;
+// //6. post like/dislike d'une sauce
+// exports.likeSauce = (req, res, next) => {
+//   // console.log(req.body, 'ctrl like : affichage userId + like dans le body');
+//   // console.log(req.params, 'ctrl like : id dans l'url de la req');
+//   // console.log(req.params.id, 'mise au format de l'id de la sauce')
 
-  switch (like) {
-    //like = 1 = user aime
-    case 1:
-      Sauce.updateOne({});
-      break;
+//   //récupérer : input like
+//   const like = req.body.like;
+//   //récupérer : url de la sauce
+//   const sauceId = req.params.id;
+//   //récupérer : userId
+//   const userId = req.body.userId;
 
-    //like = 0 = user annule like
-    case 0:
-      break;
+//   //méthode JS includes()
+//   //opérateur mongoDB $inc
+//   //opérateur mongoDB $push
+//   //opérateur mongoDB $pull
 
-    //like = -1 = user n'aime pas
-    case -1:
-      break;
+//   switch (like) {
+//     //like = 1 = user aime
+//     case 1:
+//       Sauce.updateOne(
+//         { _id: sauceId },
+//         {
+//           $inc: { like: +1 },
+//           $push: { usersLiked },
+//         }
+//       )
+//         .then(() => res.status(201).json({ message: "Like +1" }))
+//         .catch((error) => res.status(400).json({ error }));
+//       break;
 
-    default:
-      break;
-  }
-};
+//     //like = -1 = user n'aime pas
+//     case -1:
+//       Sauce.updateOne(
+//         { _id: sauceId },
+//         {
+//           $inc: { like: +1 },
+//           $push: { usersDisliked },
+//         }
+//       )
+//         .then(() => res.status(201).json({ message: "Like -1" }))
+//         .catch((error) => res.status(400).json({ error }));
+//       break;
+
+//     //like = 0 = user annule like
+//     //findOne pour check si like/dislike présent ou non
+//     case 0:
+//       Sauce.findOne({ _id: sauceId })
+//         .then((sauce) => {
+//           //si userId est dans userLiked => suppr le like +1
+//           if (sauce.usersLiked.includes(userId)) {
+//             Sauce.updateOne(
+//               { _id: sauceId },
+//               {
+//                 $inc: { like: -1 },
+//                 $pull: { usersLiked },
+//               }
+//             )
+//               .then(() =>
+//                 res.status(201).json({ message: "remove du like +1" })
+//               )
+//               .catch((error) => res.status(400).json({ error }));
+
+//             //sinon si userId est dans usersDisliked => suppr le dislike +1
+//           } else if (sauce.usersDisliked.includes(userId)) {
+//             Sauce.updateOne(
+//               { _id: sauceId },
+//               {
+//                 $inc: { like: -1 },
+//                 $pull: { usersDisliked },
+//               }
+//             )
+//               .then(() =>
+//                 res.status(201).json({ message: "remove du dislike +1" })
+//               )
+//               .catch((error) => res.status(400).json({ error }));
+//           }
+//         })
+//         .catch((error) =>
+//           res.status(404).json({ message: "aucune sauce présente" })
+//         );
+//       break;
+
+//     default:
+//       break;
+//   }
+// };

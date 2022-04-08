@@ -6,10 +6,12 @@ const express = require("express");
 const router = express.Router();
 //importer les controllers depuis controllers/sauces
 const sauceCtrl = require("../controllers/sauce");
+//importer controllers like
+const likeCtrl = require("../controllers/like");
 //importer controller de vérification/sécurité de route
 const auth = require("../middleware/auth");
 //importer multer
-const multer = require("../middleware/multer-config")
+const multer = require("../middleware/multer-config");
 
 //permettre la modification d'une sauce spécifique
 router.put("/:id", auth, multer, sauceCtrl.modifySauce);
@@ -22,7 +24,7 @@ router.get("", auth, sauceCtrl.getAllSauces);
 //permettre la création d'une sauce en vérifiant l'auth
 router.post("", auth, multer, sauceCtrl.createSauce);
 //permettre un like / dislike sur une sauce
-// router.post("/:id/like", auth, sauceCtrl.likeSauce);
+router.post("/:id/like", auth, likeCtrl.likeSauce);
 
 //exporter le routeur
 module.exports = router;
